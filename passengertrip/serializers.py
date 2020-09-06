@@ -3,7 +3,7 @@ from core.models import Vehicle, User, Sacco, VehicleTrip, Routes, PassengerTrip
 from user.serializers import UserSerializer
 from sacco.serializers import SaccoSerializer
 from routes.serializers import RoutesSerializer
-from vehicletrip.serializers import VehicleTripSerializer
+from vehicletrip.serializers import VehicleTripSerializer, VehicleTripListSerializer
 from seats.serializers import SeatsSerializer
 
 
@@ -21,7 +21,7 @@ class PassengerTripListSerializer(PassengerTripSerializer):
 
     passenger = UserSerializer(read_only=True)
     sacco = SaccoSerializer(read_only=True)
-    vehicleTrip = VehicleTripSerializer(read_only=True)
+    vehicleTrip = VehicleTripListSerializer(read_only=True)
     seatNo = SeatsSerializer(read_only=True)
     class Meta:
         model = PassengerTrip

@@ -120,6 +120,9 @@ class Sacco(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     paybill = models.CharField(max_length=255, unique=True, null=True)
 
+    class Meta:
+        ordering = ('-created_at', )
+
 
     def __str__(self):
         return self.name
@@ -137,6 +140,9 @@ class Routes(TimeStampMixin):
     maxRate = models.CharField(max_length=255)
     # created_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ('-created_at', )
+
     def __str__(self):
         return self.starting_from + ' -> ' + self.ending_at      
 
@@ -148,6 +154,9 @@ class VehicleType(models.Model):
     driver_seat_no = models.CharField(max_length=255)
     tout_seat_no = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-created_at', )
 
     def __str__(self):
         return self.name
@@ -197,6 +206,10 @@ class Vehicle(models.Model):
         return self.regNo
 
 
+    class Meta:
+        ordering = ('-created_at', )
+        
+
 class VehicleTrip(models.Model):
     """Trips taken by a vehicle"""
     created_at = models.DateTimeField(auto_now=True)
@@ -227,6 +240,11 @@ class VehicleTrip(models.Model):
         on_delete=models.CASCADE,
         related_name='vehicle_trip'
     )
+
+
+
+    class Meta:
+        ordering = ('-created_at', )
 
     # def __str__(self):
         # return self.starting_from + '('+ self.starting_time + ')' + '->' + self.ending_at + '('+ self.ending_time + ')'
@@ -268,10 +286,19 @@ class PassengerTrip(models.Model):
         return str(self.id)
 
 
+    class Meta:
+        ordering = ('-created_at', )
+
+
 class PaymentMethod(models.Model):
     """Available methods of payment"""
     created_at = models.DateTimeField(auto_now=True)
     method = models.CharField(max_length=255)
+
+
+    class Meta:
+        ordering = ('-created_at', )
+
 
     def __str__(self):
         return self.method
@@ -311,6 +338,10 @@ class Payment(models.Model):
         return self.amount
 
 
+    class Meta:
+        ordering = ('-created_at', )
+
+
 class MpesaPayment(BaseModel):
     """
     Used to store successful mpesa transactions.
@@ -326,6 +357,10 @@ class MpesaPayment(BaseModel):
     phone_number = models.CharField(max_length=225)
     organization_balance = models.DecimalField(max_digits=10, decimal_places=2)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1, null=True, blank=True)
+
+
+    class Meta:
+        ordering = ('-created_at', )
 
 
 class Seats(models.Model):
