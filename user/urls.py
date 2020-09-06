@@ -9,6 +9,7 @@ app_name = 'user'
 urlpatterns = [
     path('create/', views.CreateSaccoUserView.as_view(), name='create'),
     path('register/', views.CreateUserView.as_view(), name='register'),
+    path('list/', views.UserViewList.as_view(), name='user_list'),
     path('token/', views.CustomJWTPairView.as_view(), name='token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('detail/', views.ManageUserView.as_view(), name='user_detail'),

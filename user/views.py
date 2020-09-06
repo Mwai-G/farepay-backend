@@ -47,6 +47,17 @@ class CreateUserView(generics.ListCreateAPIView):
         )
 
 
+class UserViewList(generics.ListAPIView):
+    """List PassengerTrips in the system"""
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+    filter_fields = (
+        'sacco',
+        'role',
+        )
+
+
 class CustomJWTPairView(TokenObtainPairView):
     serializer_class = AuthTokenPairSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES

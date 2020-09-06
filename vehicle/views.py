@@ -12,13 +12,36 @@ class CreateVehicleView(generics.ListCreateAPIView):
     filter_fields = (
         'sacco',
     )
+    def post(self, request, *args, **kwargs):
+        """
+        If user role is tout or conductor,
+        determines update of assigned_vehicle
+        """
+        # some actions
+        user = request.user
+        data = request.data
+
+        if data['driver']:
+            driver = User.objects.get(id=int(data['driver']))
+            driver.assigned_vehicle = True
+            driver.save()
+        if data['tout']:
+            tout = User.objects.get(id=int(data['tout']))
+            tout.assigned_vehicle = True
+            tout.save()
+
+        return self.create(request, *args, **kwargs)        
+
+
+
+        # return super(UpdateVehicleView, self).update(request, *args, **kwargs) 
 
 # Create your views here.
 class VehicleListView(generics.ListCreateAPIView):
     """Create a new Vehicle in the system"""
     queryset = Vehicle.objects.all()
     serializer_class = VehicleListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     filter_fields = (
         'sacco',
         'driver', 'tout'

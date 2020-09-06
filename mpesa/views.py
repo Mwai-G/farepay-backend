@@ -29,9 +29,11 @@ def lipa_na_mpesa_online(request):
     data = request.data  # phone, vehicleReg, account_no
     print('Data is: ', data)
     regNo = data['vehicleReg']
-    vTrip = models.VehicleTrip.objects.filter(vehicle__regNo=regNo).first()
+    vTrip = models.VehicleTrip.objects.filter(vehicle__regNo=regNo).filter(ending_time=None).first()
+    print('None time: ', vTrip.ending_time)
+
     sacco = vTrip.sacco
-    amt = 1
+    amt = vTrip.price
     seatNo=data['seatNo']
     phone = data['phone']
     access_token = MpesaAccessToken.validated_mpesa_access_token
@@ -51,6 +53,7 @@ def lipa_na_mpesa_online(request):
         "TransactionDesc": f"Fare payment for bus {regNo} of {amt}"
     }
     response = requests.post(api_url, json=request, headers=headers)
+    print(  'STK PUSH RESPONSE: ', response)
     print(vTrip.starting_from)
   
     sacco = vTrip.sacco

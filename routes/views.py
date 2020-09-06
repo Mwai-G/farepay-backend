@@ -9,7 +9,9 @@ class CreateRoutesView(generics.ListCreateAPIView):
     queryset = Routes.objects.all()
     serializer_class = RoutesSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    filter_fields = (
+        'sacco',
+        )
 class GetUpdateRoutesView(generics.RetrieveUpdateAPIView):
     """Create a new Routes in the system"""
     queryset = Routes.objects.all()

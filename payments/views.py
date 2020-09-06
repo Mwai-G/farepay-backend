@@ -8,10 +8,14 @@ class CreatePaymentsView(generics.ListCreateAPIView):
     """Create a new Payments in the system"""
     queryset = Payment.objects.all()
     serializer_class = PaymentListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+    filter_fields = (
+        'sacco',
+        )
+
 
 class GetUpdatePaymentsView(generics.RetrieveUpdateAPIView):
     """Create a new Payments in the system"""
     queryset = Payment.objects.all()
     serializer_class = PaymentListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]

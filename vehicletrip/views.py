@@ -16,8 +16,14 @@ class CreateVehicleTripView(generics.CreateAPIView):
     """Create a new VehicleTrip in the system"""
     queryset = VehicleTrip.objects.all()
     serializer_class = VehicleTripSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
+# Update your views here.
+class UpdateVehicleTripView(generics.UpdateAPIView):
+    """Update a new VehicleTrip in the system"""
+    queryset = VehicleTrip.objects.all()
+    serializer_class = VehicleTripSerializer
+    permission_classes = [permissions.AllowAny]
 
 class VehicleTripFilter(filters.FilterSet):
 
@@ -37,9 +43,10 @@ class ListVehicleTripView(generics.ListAPIView):
     serializer_class = VehicleTripListSerializer
     permission_classes = [permissions.AllowAny]
     filter_fields = (
-        'vehicle',
+        'tout',
         'ending_at',
-        'starting_time'
+        'starting_time',
+        'sacco'
         )
 
 @api_view(['GET'])
@@ -48,23 +55,27 @@ def getVehicleTrip(request):
     """Returns dashboard data based on requesting user"""
     vehicle = request.query_params['vehicle']
     print('vehicle', vehicle)
-    trip = VehicleTrip.objects.filter(vehicle__regNo=vehicle).first()
-    print('trip: ', trip)
-    trip = VehicleTrip.objects.filter(vehicle__regNo=vehicle).first()
+
+    try:
+        trip = VehicleTrip.objects.filter(vehicle__regNo=vehicle).filter(ending_time=None).first()
+        print('None time: ', trip.ending_time)
+    except VehicleTrip.DoesNotExist:
+        return  Response({'error': 'No Active Trip Found'}, status=status.HTTP_404_NOT_FOUND)
+
     serializer = VehicleTripListSerializer(trip, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class GetUpdateVehicleTripView(generics.RetrieveUpdateAPIView):
+class GetVehicleTripView(generics.RetrieveUpdateAPIView):
     """Create a new VehicleTrip in the system"""
     queryset = VehicleTrip.objects.all()
     serializer_class = VehicleTripListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class GetSeatsByVehicleView(APIView):
     """Create a new user in the system"""
     # serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get_object(self, pk):
         result = VehicleTrip.objects.get(sacco=pk)
         # print(result)
